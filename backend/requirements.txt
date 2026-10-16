@@ -6,6 +6,7 @@ sqlalchemy[asyncio]>=2.0
 asyncpg>=0.30
 alembic>=1.13
 redis>=5.0
+pwdlib[bcrypt]>=0.3
 
 langchain>=0.3
 langchain-community>=0.3
