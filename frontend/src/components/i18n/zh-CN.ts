@@ -1,0 +1,28 @@
+export const zhCN = {
+  login: '登录',
+  register: '注册',
+  username: '用户名',
+  password: '密码',
+  confirm_password: '确认密码',
+  login_hint: '使用你的账号进入文档库。',
+  register_hint: '创建一个账号，用来存放你自己的文档。',
+  enter_library: '进入文档库',
+  create_account: '创建账号',
+  back_login: '返回登录',
+  password_mismatch: '两次输入的密码不一致。',
+  brand: '个人文档库',
+  intro_1: '笔记、资料和摘录放在同一处。',
+  intro_2: '登录之后，只能看到自己的文档。',
+  add: '添加',
+  edit: '编辑',
+  delete: '删除',
+  update: '修改',
+  edit_name: '编辑姓名',
+  account_created: '账户创建',
+  success: '成功',
+  fail: '失败',
+  request_fail: '请求失败',
+  username_exists: '用户名已被占用',
+}
+
+export type Messages = typeof zhCN

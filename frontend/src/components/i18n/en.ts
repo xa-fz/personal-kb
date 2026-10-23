@@ -1,0 +1,28 @@
+import type { Messages } from '@/components/i18n/zh-CN'
+
+export const en: Messages = {
+  login: 'Log in',
+  register: 'Register',
+  username: 'Username',
+  password: 'Password',
+  confirm_password: 'Confirm password',
+  login_hint: 'Use your account to enter the library.',
+  register_hint: 'Create an account for your own documents.',
+  enter_library: 'Enter library',
+  create_account: 'Create account',
+  back_login: 'Back to log in',
+  password_mismatch: 'The passwords do not match.',
+  brand: 'Personal library',
+  intro_1: 'Notes, files, and excerpts in one place.',
+  intro_2: 'After you log in, you only see your own documents.',
+  add: 'Add',
+  edit: 'Edit',
+  delete: 'Delete',
+  update: 'Update',
+  edit_name: 'Edit name',
+  account_created: 'Account creation',
+  success: ' succeeded',
+  fail: ' failed',
+  request_fail: 'Request failed',
+  username_exists: 'Username is already taken',
+}

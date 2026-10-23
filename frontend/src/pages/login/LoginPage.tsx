@@ -1,0 +1,57 @@
+import { useI18n } from '@/components/i18n'
+import { fieldClass, LibraryShell } from '@/components/LibraryShell'
+
+export function LoginPage({ onRegister }: { onRegister: () => void }) {
+  const { t } = useI18n()
+
+  function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+  }
+
+  return (
+    <LibraryShell>
+      <form onSubmit={onSubmit} className="w-full max-w-sm">
+        <h2 className="font-serif text-3xl tracking-tight">{t('login')}</h2>
+        <p className="mt-3 text-sm leading-6 text-[#6f675f]">{t('login_hint')}</p>
+
+        <label className="mt-10 block text-sm" htmlFor="username">
+          {t('username')}
+        </label>
+        <input
+          id="username"
+          name="username"
+          type="text"
+          autoComplete="username"
+          required
+          className={fieldClass}
+        />
+
+        <label className="mt-8 block text-sm" htmlFor="password">
+          {t('password')}
+        </label>
+        <input
+          id="password"
+          name="password"
+          type="password"
+          autoComplete="current-password"
+          required
+          className={fieldClass}
+        />
+
+        <button
+          type="submit"
+          className="pointer mt-10 w-full bg-[#241f1b] py-3 text-sm tracking-widest text-[#f3efe6]"
+        >
+          {t('enter_library')}
+        </button>
+        <button
+          type="button"
+          onClick={onRegister}
+          className="pointer mt-4 w-full border border-[#241f1b] py-3 text-sm tracking-widest"
+        >
+          {t('register')}
+        </button>
+      </form>
+    </LibraryShell>
+  )
+}
