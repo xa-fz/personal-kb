@@ -1,11 +1,24 @@
+import { useAuth } from '@/components/auth'
 import { useI18n } from '@/components/i18n'
+import { loginUser } from '@/components/http/api'
 import { fieldClass, LibraryShell } from '@/components/LibraryShell'
 
-export function LoginPage({ onRegister }: { onRegister: () => void }) {
+export function LoginPage({ onRegister, onSuccess }: { onRegister: () => void; onSuccess: () => void }) {
   const { t } = useI18n()
+  const { setToken } = useAuth()
 
-  function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    const data = new FormData(event.currentTarget)
+    const username = String(data.get('username') ?? '')
+    const password = String(data.get('password') ?? '')
+    try {
+      const body = await loginUser(username, password)
+      setToken(body.access_token, username)
+      onSuccess()
+    } catch {
+      return
+    }
   }
 
   return (

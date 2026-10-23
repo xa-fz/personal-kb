@@ -7,3 +7,11 @@ export function registerUser(username: string, password: string) {
     body: JSON.stringify({ username, password }),
   })
 }
+
+export function loginUser(username: string, password: string) {
+  return request<{ access_token: string; token_type: string }>('/auth/login', {
+    method: 'POST',
+    key: 'login',
+    body: JSON.stringify({ username, password }),
+  })
+}

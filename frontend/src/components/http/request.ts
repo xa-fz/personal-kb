@@ -1,3 +1,4 @@
+import { getToken } from '@/components/auth'
 import { errorDetail, noticeText } from '@/components/i18n'
 import { showNotice } from '@/components/notice'
 
@@ -8,12 +9,17 @@ type Options = RequestInit & { key?: string }
 export async function request<T>(path: string, options?: Options): Promise<T> {
   const { key, headers, ...init } = options ?? {}
   const method = (init.method ?? 'GET').toUpperCase()
+  const token = getToken()
   let res: Response
   try {
     res = await fetch(`${BASE_URL}${path}`, {
       ...init,
       method,
-      headers: { 'Content-Type': 'application/json', ...headers },
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...headers,
+      },
     })
   } catch {
     const text = noticeText(false, method, key)

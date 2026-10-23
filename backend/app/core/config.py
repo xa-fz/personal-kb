@@ -17,5 +17,8 @@ class Settings(BaseSettings):
 
     cors_origins: list[str] = ["http://localhost:5173"]
 
+    jwt_secret: str = "change-me"
+    jwt_expire_minutes: int = 60 * 24 * 7 # 7 days
+
 
 settings = Settings()

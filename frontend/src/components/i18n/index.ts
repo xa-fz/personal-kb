@@ -2,13 +2,11 @@ import { useEffect, useState } from 'react'
 
 import { en } from '@/components/i18n/en'
 import { zhCN } from '@/components/i18n/zh-CN'
-import { zhTW } from '@/components/i18n/zh-TW'
 
-export type Lang = 'zh-CN' | 'zh-TW' | 'en'
+export type Lang = 'zh-CN' | 'en'
 
 const locales: Record<Lang, typeof zhCN> = {
   'zh-CN': zhCN,
-  'zh-TW': zhTW,
   en,
 }
 
@@ -25,7 +23,7 @@ const details: Record<string, keyof typeof zhCN> = {
 
 function readLang(): Lang {
   const saved = localStorage.getItem('lang')
-  if (saved === 'zh-CN' || saved === 'zh-TW' || saved === 'en') return saved
+  if (saved === 'en') return saved
   return 'zh-CN'
 }
 
