@@ -15,3 +15,10 @@ export function loginUser(username: string, password: string) {
     body: JSON.stringify({ username, password }),
   })
 }
+
+export function logoutUser() {
+  return request<{ ok: boolean }>('/auth/logout', {
+    method: 'POST',
+    key: 'logout',
+  })
+}

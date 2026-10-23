@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { useAuth } from '@/components/auth'
 import { Dropdown } from '@/components/dropdown'
+import { logoutUser } from '@/components/http/api'
 import { useI18n } from '@/components/i18n'
 import { LangSwitch } from '@/components/i18n/LangSwitch'
 
@@ -74,7 +75,19 @@ export function HomePage() {
                 {name.slice(0, 1).toUpperCase()}
               </span>
             }
-            items={[{ label: t('logout'), onClick: () => setToken('') }]}
+            items={[
+              {
+                label: t('logout'),
+                onClick: async () => {
+                  try {
+                    await logoutUser()
+                    setToken('')
+                  } catch {
+                    return
+                  }
+                },
+              },
+            ]}
           />
           <LangSwitch />
         </div>
