@@ -2,6 +2,7 @@ import { useAuth } from '@/components/auth'
 import { useI18n } from '@/components/i18n'
 import { loginUser } from '@/components/http/api'
 import { fieldClass, LibraryShell } from '@/components/LibraryShell'
+import { PasswordField } from '@/pages/login/PasswordField'
 
 export function LoginPage({ onRegister, onSuccess }: { onRegister: () => void; onSuccess: () => void }) {
   const { t } = useI18n()
@@ -42,14 +43,7 @@ export function LoginPage({ onRegister, onSuccess }: { onRegister: () => void; o
         <label className="mt-8 block text-sm" htmlFor="password">
           {t('password')}
         </label>
-        <input
-          id="password"
-          name="password"
-          type="password"
-          autoComplete="current-password"
-          required
-          className={fieldClass}
-        />
+        <PasswordField id="password" name="password" autoComplete="current-password" />
 
         <button
           type="submit"

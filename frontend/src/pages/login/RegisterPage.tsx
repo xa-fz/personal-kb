@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useI18n } from '@/components/i18n'
 import { registerUser } from '@/components/http/api'
 import { fieldClass, LibraryShell } from '@/components/LibraryShell'
+import { PasswordField } from '@/pages/login/PasswordField'
 
 export function RegisterPage({ onLogin }: { onLogin: () => void }) {
   const { t } = useI18n()
@@ -47,28 +48,12 @@ export function RegisterPage({ onLogin }: { onLogin: () => void }) {
         <label className="mt-8 block text-sm" htmlFor="password">
           {t('password')}
         </label>
-        <input
-          id="password"
-          name="password"
-          type="password"
-          autoComplete="new-password"
-          required
-          minLength={6}
-          className={fieldClass}
-        />
+        <PasswordField id="password" name="password" autoComplete="new-password" minLength={6} />
 
         <label className="mt-8 block text-sm" htmlFor="confirm">
           {t('confirm_password')}
         </label>
-        <input
-          id="confirm"
-          name="confirm"
-          type="password"
-          autoComplete="new-password"
-          required
-          minLength={6}
-          className={fieldClass}
-        />
+        <PasswordField id="confirm" name="confirm" autoComplete="new-password" minLength={6} />
         {passwordMismatch && <p className="mt-3 text-sm text-[#8c3a2f]">{t('password_mismatch')}</p>}
 
         <button

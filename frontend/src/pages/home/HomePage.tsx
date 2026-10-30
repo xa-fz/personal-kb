@@ -1,56 +1,81 @@
 import { useEffect, useState } from 'react'
 
-import { useAuth } from '@/components/auth'
-import { Dropdown } from '@/components/dropdown'
-import { logoutUser } from '@/components/http/api'
+import { LikeIcon } from '@/components/icons'
 import { useI18n } from '@/components/i18n'
-import { LangSwitch } from '@/components/i18n/LangSwitch'
+
+const topics = ['guitar', 'fitness', 'astronomy', 'program', 'literature'] as const
+
+const quote = {
+  text: '读完只留三句话：作者的主张、一个让你改主意的例子、一个你仍不同意的地方。',
+  author: '苏晚',
+}
 
 const shared = [
   {
     title: '如何做阅读笔记',
     author: '林夏',
     excerpt: '先写下自己的问题，再摘下原文里真正回答了这个问题的句子。笔记不是抄书，是留下下次还能用的判断。',
+    likes: 31,
+    dislikes: 2,
   },
   {
     title: '一篇说明文的结构',
     author: '周宁',
     excerpt: '开头给结论，中间用例子把结论撑住，结尾只收回这一件事。',
+    likes: 18,
+    dislikes: 2,
   },
   {
     title: '公共文档怎么写才好读',
     author: '陈舟',
     excerpt: '默认读者没有上下文。第一段说清这篇解决什么，后面每一节只推进一步。术语第一次出现时用一句人话解释。',
+    likes: 26,
+    dislikes: 1,
   },
   {
     title: '收集资料的四个格子',
     author: '林夏',
     excerpt: '事实、例子、反例、还没想清楚的问题，分开记。混在一条笔记里，下次就找不到。',
+    likes: 9,
+    dislikes: 3,
   },
   {
     title: '把一本书读薄',
     author: '苏晚',
     excerpt: '读完只留三句话：作者的主张、一个让你改主意的例子、一个你仍不同意的地方。',
+    likes: 14,
+    dislikes: 1,
   },
   {
     title: '分享前先问一句',
     author: '周宁',
     excerpt: '这篇拿出去，陌生人能不能只靠正文看懂？看不懂就还放在个人区。',
+    likes: 7,
+    dislikes: 4,
   },
-]
-
-const mine = [
-  { title: '如何做阅读笔记', visible: true },
-  { title: '本周会议记录', visible: false },
-  { title: '项目名词表', visible: false },
-  { title: '一篇说明文的结构', visible: true },
 ]
 
 export function HomePage() {
   const { t } = useI18n()
-  const { username, setToken } = useAuth()
-  const name = username || t('signed_in')
+  const [score, setScore] = useState(() =>
+    Object.fromEntries(shared.map((doc) => [doc.title, { likes: doc.likes, dislikes: doc.dislikes, mine: 0 as 0 | 1 | -1 }])),
+  )
   const hot = shared.slice(0, 3)
+
+  function vote(title: string, next: 1 | -1) {
+    setScore((current) => {
+      const item = current[title]
+      const mine = item.mine === next ? 0 : next
+      return {
+        ...current,
+        [title]: {
+          likes: item.likes - (item.mine === 1 ? 1 : 0) + (mine === 1 ? 1 : 0),
+          dislikes: item.dislikes - (item.mine === -1 ? 1 : 0) + (mine === -1 ? 1 : 0),
+          mine,
+        },
+      }
+    })
+  }
   const [index, setIndex] = useState(0)
   const slide = hot[index]
 
@@ -60,39 +85,7 @@ export function HomePage() {
   }, [hot.length])
 
   return (
-    <div className="h-full overflow-y-auto bg-[#f3efe6] text-[#1c1915]">
-      <header className="sticky top-0 z-10 flex flex-wrap items-center justify-between gap-4 bg-[#241f1b] px-6 py-4 text-[#f3efe6] lg:px-10">
-        <div>
-          <p className="text-xs tracking-[0.32em] text-[#c4b8a8]">{t('brand')}</p>
-          <p className="font-serif text-xl tracking-tight">Personal KB</p>
-        </div>
-        <div className="flex flex-wrap items-center gap-4">
-          <Dropdown
-            label={name}
-            header={`Hi, ${name}`}
-            trigger={
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#f3efe6] font-serif text-sm text-[#241f1b]">
-                {name.slice(0, 1).toUpperCase()}
-              </span>
-            }
-            items={[
-              {
-                label: t('logout'),
-                onClick: async () => {
-                  try {
-                    await logoutUser()
-                    setToken('')
-                  } catch {
-                    return
-                  }
-                },
-              },
-            ]}
-          />
-          <LangSwitch />
-        </div>
-      </header>
-
+    <>
       <section className="relative bg-[#d4cdc3] text-[#241f1b]">
         <button
           type="button"
@@ -141,32 +134,66 @@ export function HomePage() {
         <section>
           <h2 className="font-serif text-3xl tracking-tight">{t('public')}</h2>
           <p className="mt-3 text-sm leading-6 text-[#6f675f]">{t('public_hint')}</p>
-          <div className="mt-8 columns-1 gap-5 sm:columns-2 lg:columns-3">
-            {shared.map((doc) => (
-              <article key={doc.title} className="mb-5 break-inside-avoid bg-white px-5 py-6">
-                <h3 className="font-serif text-2xl tracking-tight">{doc.title}</h3>
-                <p className="mt-3 text-sm leading-7 text-[#6f675f]">{doc.excerpt}</p>
-                <p className="mt-6 text-xs tracking-[0.18em] text-[#8a8178]">{doc.author}</p>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="mt-16 pb-10">
-          <h2 className="font-serif text-3xl tracking-tight">{t('personal')}</h2>
-          <p className="mt-3 text-sm leading-6 text-[#6f675f]">{t('personal_hint')}</p>
-          <ul className="mt-8 border-y border-[#e4dcd0]">
-            {mine.map((item) => (
-              <li key={item.title} className="flex items-center justify-between gap-4 border-b border-[#e4dcd0] py-4 last:border-b-0">
-                <span className="font-serif text-lg">{item.title}</span>
-                <span className="shrink-0 text-xs tracking-[0.18em] text-[#8a8178]">
-                  {item.visible ? t('visible') : t('private')}
+          <div className="mt-8">
+            <p className="text-xs text-[#8a8178]">{t('topic')}</p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {topics.map((key) => (
+                <span key={key} className="rounded-full bg-white px-4 py-2 text-sm shadow-[0_8px_24px_rgba(36,31,27,0.06)]">
+                  {t(key)}
                 </span>
-              </li>
-            ))}
+              ))}
+            </div>
+          </div>
+          <div className="mt-4 grid gap-4 lg:grid-cols-3">
+            <article className="flex flex-col justify-between rounded-2xl bg-white p-8 shadow-[0_8px_24px_rgba(36,31,27,0.06)] lg:col-span-2">
+              <div>
+                <h3 className="font-serif text-4xl tracking-tight">{shared[0].title}</h3>
+                <p className="mt-4 max-w-xl text-sm leading-7 text-[#6f675f]">{shared[0].excerpt}</p>
+              </div>
+              <p className="mt-8 text-sm text-[#8a8178]">{shared[0].author}</p>
+            </article>
+            <blockquote className="flex flex-col justify-between rounded-2xl bg-[#e7e1d6] p-8">
+              <div>
+                <p className="text-xs text-[#8a8178]">{t('excerpt')}</p>
+                <p className="mt-4 font-serif text-2xl leading-snug tracking-tight">{quote.text}</p>
+              </div>
+              <p className="mt-8 text-sm text-[#6f675f]">{quote.author}</p>
+            </blockquote>
+          </div>
+          <ul className="mt-4 overflow-hidden rounded-2xl bg-white shadow-[0_8px_24px_rgba(36,31,27,0.06)]">
+            {[...shared.slice(1)]
+              .sort((a, b) => score[b.title].likes - score[a.title].likes)
+              .map((doc) => (
+                <li key={doc.title} className="flex items-center gap-6 border-b border-[#e4dcd0] px-6 py-4 last:border-b-0">
+                  <span className="min-w-0 flex-1 font-serif text-lg">{doc.title}</span>
+                  <span className="shrink-0 text-sm text-[#8a8178]">{doc.author}</span>
+                  <span className="flex shrink-0 items-center gap-4 text-sm">
+                    <button
+                      type="button"
+                      aria-label={t('like')}
+                      onClick={() => vote(doc.title, 1)}
+                      className={`pointer flex items-center gap-1.5 ${score[doc.title].mine === 1 ? 'text-[#241f1b]' : 'text-[#8a8178]'}`}
+                    >
+                      <LikeIcon />
+                      {score[doc.title].likes}
+                    </button>
+                    <button
+                      type="button"
+                      aria-label={t('dislike')}
+                      onClick={() => vote(doc.title, -1)}
+                      className={`pointer flex items-center gap-1.5 ${score[doc.title].mine === -1 ? 'text-[#241f1b]' : 'text-[#8a8178]'}`}
+                    >
+                      <span className="inline-flex rotate-180">
+                        <LikeIcon />
+                      </span>
+                      {score[doc.title].dislikes}
+                    </button>
+                  </span>
+                </li>
+              ))}
           </ul>
         </section>
       </main>
-    </div>
+    </>
   )
 }
