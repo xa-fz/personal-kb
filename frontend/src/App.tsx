@@ -5,6 +5,7 @@ import { SiteHeader } from '@/components/header'
 import { useI18n } from '@/components/i18n'
 import { Notice } from '@/components/notice'
 import { AccountPage } from '@/pages/account/AccountPage'
+import { DetailPage } from '@/pages/detail/DetailPage'
 import { HomePage } from '@/pages/home/HomePage'
 import { LoginPage } from '@/pages/login/LoginPage'
 import { RegisterPage } from '@/pages/login/RegisterPage'
@@ -40,15 +41,24 @@ function App() {
     document.title = `${t(title)} · Personal KB`
   }, [path, token, lang, t])
 
+  const docId = /^\/doc\/(\d+)$/.exec(path)?.[1]
   const page =
     path === registerPath ? (
       <RegisterPage onLogin={() => go(signInPath)} />
     ) : path === signInPath ? (
       <LoginPage onRegister={() => go(registerPath)} onSuccess={() => go('/')} />
     ) : token ? (
-      <div className="scroll-none h-full overflow-y-auto bg-[#f3efe6] text-[#1c1915]">
+      <div className="flex h-full flex-col overflow-hidden bg-[#f3efe6] text-[#1c1915]">
         <SiteHeader onHome={() => go('/')} onAccount={() => go(accountPath)} />
-        {path === accountPath ? <AccountPage onHome={() => go('/')} /> : <HomePage />}
+        <div className={`${docId ? '' : 'scroll-none '}min-h-0 flex-1 overflow-y-auto`}>
+          {docId ? (
+            <DetailPage id={Number(docId)} onBack={() => go('/')} />
+          ) : path === accountPath ? (
+            <AccountPage onHome={() => go('/')} />
+          ) : (
+            <HomePage onOpen={(id) => go(`/doc/${id}`)} />
+          )}
+        </div>
       </div>
     ) : null
 

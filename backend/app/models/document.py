@@ -14,5 +14,6 @@ class Document(Base):
     stored_name: Mapped[str] = mapped_column(String(255), unique=True)
     is_public: Mapped[bool] = mapped_column(Boolean, default=False)
     category: Mapped[str] = mapped_column(String(32))
+    summary: Mapped[str] = mapped_column(String(1000), default="")
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now, onupdate=datetime.now)

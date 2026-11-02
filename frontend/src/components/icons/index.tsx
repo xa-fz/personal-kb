@@ -8,13 +8,7 @@ export function LikeIcon() {
 }
 
 export function DeleteIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M9.5 4.5 h5" />
-      <path d="M4 7.5 h16" />
-      <path d="M7 7.5 V19 a1 1 0 0 0 1 1 h8 a1 1 0 0 0 1-1 V7.5" />
-    </svg>
-  )
+  return <img src="/kb/delete.svg" alt="" className="h-5 w-5" />
 }
 
 export function FileIcon() {
@@ -24,6 +18,35 @@ export function FileIcon() {
       <path d="M14 3 v5 h5" />
     </svg>
   )
+}
+
+const fileTypes: Record<string, string> = {
+  pdf: 'pdf',
+  doc: 'doc',
+  docx: 'doc',
+  txt: 'txt',
+  md: 'md',
+  png: 'picture',
+  jpg: 'picture',
+  jpeg: 'picture',
+  gif: 'picture',
+  webp: 'picture',
+  bmp: 'picture',
+  svg: 'picture',
+  xls: 'xls',
+  xlsx: 'xlsx',
+  csv: 'csv',
+  ppt: 'ppt',
+  pptx: 'ppt',
+  html: 'html',
+  htm: 'html',
+  mp4: 'video',
+  mov: 'video',
+}
+
+export function FileTypeIcon({ filename }: { filename: string }) {
+  const name = fileTypes[filename.split('.').pop()?.toLowerCase() ?? ''] ?? 'file'
+  return <img src={`/file-types/${name}.svg`} alt="" className="h-12 w-12" />
 }
 
 export function UploadIcon() {
