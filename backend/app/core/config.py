@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     api_prefix: str = "/api"
     debug: bool = True
 
-    database_url: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/personal_kb"
+    database_url: str = "postgresql+asyncpg://postgres:postgres@127.0.0.1:5432/personal_kb"
     redis_url: str = "redis://localhost:6379/0"
 
     upload_dir: str = "uploads"

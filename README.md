@@ -46,7 +46,7 @@
 
 | 变量 | 说明 | 默认 |
 | --- | --- | --- |
-| `DATABASE_URL` | PostgreSQL 异步连接串 | `postgresql+asyncpg://postgres:postgres@localhost:5432/personal_kb` |
+| `DATABASE_URL` | PostgreSQL 异步连接串 | `postgresql+asyncpg://postgres:postgres@127.0.0.1:5432/personal_kb` |
 | `REDIS_URL` | Redis 地址 | `redis://localhost:6379/0` |
 | `CORS_ORIGINS` | 允许的前端来源 | `["http://localhost:5173"]` |
 | `UPLOAD_DIR` | 上传目录 | `uploads` |
