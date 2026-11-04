@@ -15,6 +15,7 @@ services:
       retries: 10
 
   api:
+    image: docker.io/${DOCKERHUB_USER:-fantesty}/personal-kb-api:${IMAGE_TAG:-latest}
     build: ./backend
     restart: unless-stopped
     environment:
@@ -30,6 +31,7 @@ services:
         condition: service_healthy
 
   web:
+    image: docker.io/${DOCKERHUB_USER:-fantesty}/personal-kb-web:${IMAGE_TAG:-latest}
     build: ./frontend
     restart: unless-stopped
     ports:
